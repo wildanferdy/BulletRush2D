@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useContext } from "react";
 
 type GameContext = {
@@ -15,7 +16,7 @@ type GameContext = {
 
 export const GameContext = createContext<GameContext | null>(null);
 
-export const GameProvider = ({ children }) => {
+export const GameProvider = ({ children }: {children: React.ReactNode}) => {
   const [username, setUsername] = useState("");
   const [selectLevel, setSelectedLevel] = useState<string | null>(null);
   const [selectGun, setSelectedGun] = useState<string | null>(null);
@@ -43,5 +44,7 @@ export const GameProvider = ({ children }) => {
 };
 
 export const useGame = () => {
-    return useContext(GameContext)
-}
+  const context = useContext(GameContext);
+  if (!context) throw new Error("useGame must use on GameProvider");
+  return context;
+};

@@ -1,12 +1,21 @@
 import WelcomeScreen from "./components/screens/WelcomeScreen";
-import { GameProvider } from "./store/gameStore";
+import { GameProvider, useGame } from "./store/gameStore";
 
 function App() {
   return (
     <GameProvider>
-      <WelcomeScreen />
+      <AppContent />
     </GameProvider>
   );
+}
+
+const AppContent = () => {
+  const { currentScreen } = useGame()
+
+  if(currentScreen === "game") return <GameScreen/>
+  if(currentScreen === "history") return <HistoryScreen/>
+  return <WelcomeScreen/>
+  
 }
 
 export default App;
