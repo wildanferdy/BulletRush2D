@@ -3,12 +3,13 @@ interface Proptypes {
     children: any,
     onClick?: () => void,
     className?: string
+    disabled?: boolean
 }
 
 const Button = (props: Proptypes) => {
-    const { type = 'button', children, onClick, className } = props
+    const { type = 'button', children, onClick, className, disabled } = props
     return (
-        <button type={type} className={className} onClick={onClick}>{children}</button>
+        <button type={type} className={className} onClick={onClick} disabled={disabled}>{children}</button>
     )
 }
 
