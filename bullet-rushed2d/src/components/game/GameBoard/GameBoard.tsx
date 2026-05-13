@@ -4,11 +4,11 @@ import crossHair from "/images/pointer.png"
 import useSpawner from "../../../hooks/useSpawner"
 import Target from "../Target"
 
-const GameBoard = () => {
+const GameBoard = ({ onScore }: { onScore: React.Dispatch<React.SetStateAction<number>> }) => {
   const crosshairRef = useRef<HTMLDivElement>(null)
   const boardRef = useRef<HTMLDivElement>(null)
 
-  const {target, removeTarget} = useSpawner()
+  const { target, removeTarget } = useSpawner()
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (crosshairRef.current) {
@@ -32,15 +32,17 @@ const GameBoard = () => {
     if (hit) {
       console.log("hit target:", hit.id)
       removeTarget(hit.id)
+      onScore((prev: number) => prev + 1)
     } else {
       console.log("miss")
     }
-    
+
+
   }
 
 
   return (
-    
+
     <div
       ref={boardRef}
       className="w-[600px] h-[1000px] relative cursor-none bg-zinc-900"
