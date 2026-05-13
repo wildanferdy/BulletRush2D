@@ -1,3 +1,4 @@
+import GameScreen from "./components/screens/GameScreen";
 import WelcomeScreen from "./components/screens/WelcomeScreen";
 import { GameProvider, useGame } from "./store/gameStore";
 
