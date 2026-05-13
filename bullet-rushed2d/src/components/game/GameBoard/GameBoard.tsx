@@ -40,7 +40,6 @@ const GameBoard = ({ onScore }: { onScore: React.Dispatch<React.SetStateAction<n
 
   }
 
-
   return (
 
     <div

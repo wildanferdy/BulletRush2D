@@ -1,6 +1,6 @@
 import Button from "../Button"
 
-const Modal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
+const Modal = ({ isOpen, onClose, children }: { isOpen: boolean, onClose: () => void, children: React.ReactNode }) => {
 
     if (!isOpen) return null
 
@@ -17,14 +17,10 @@ const Modal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) =>
                     </svg>
                 </Button>
 
-                <h2 className="text-white text-lg font-medium mb-5">How to play game</h2>
+                <h2 className="text-white text-lg font-medium mb-5">{children}</h2>
 
                 <ol className="text-gray-300 text-sm space-y-2 list-decimal list-inside">
-                    <li>Input Username</li>
-                    <li>Point the pointer at the target</li>
-                    <li>Click to shoot</li>
-                    <li>Get as many points as possible</li>
-                    <li>Enjoy!</li>
+                    {children}
                 </ol>
             </div>
         </div>
