@@ -8,17 +8,17 @@ type TargetType = {
 }
 
 const useSpawner = () => {
-    const [targets, setTargets] = useState<TargetType[]>([])
+    const [target, setTarget] = useState<TargetType[]>([])
 
     const spawnTarget = () => {
       const newTarget = {
-        id: Date.now(),
+        id: Date.now() + Math.random(),
         x: Math.random() * 600,
         y: Math.random() * 1000,
         src: ""
       }
 
-      setTargets(prev => [...prev, newTarget])
+      setTarget(prev => [...prev, newTarget])
       
     }
 
@@ -37,11 +37,11 @@ const useSpawner = () => {
     }, [])
 
     const removeTarget = (id: number) => {
-        setTargets(prev => prev.filter(t => t.id !== id))
+        setTarget(prev => prev.filter(t => t.id !== id))
 
     }
 
-    return {targets, spawnTarget, removeTarget}
+    return {target, spawnTarget, removeTarget}
     
 }
 
