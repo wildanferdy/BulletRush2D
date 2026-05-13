@@ -1,4 +1,4 @@
-import GameBoard from "../game/GameBoard"
+import GameBoard from "../game/GameBoard/GameBoard"
 
 const GameScreen = () => {
   return (
