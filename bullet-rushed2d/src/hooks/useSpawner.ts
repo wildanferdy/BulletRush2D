@@ -1,48 +1,68 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
+import { useGame } from "../store/gameStore";
+import { TARGETS } from "../utils/gameConfig";
 
 type TargetType = {
-  id: number
-  x: number
-  y: number
-  src: string
-}
+  id: number;
+  x: number;
+  y: number;
+  src: string;
+};
 
-const useSpawner = () => {
-    const [target, setTarget] = useState<TargetType[]>([])
+const useSpawner = (isGameOver: boolean) => {
+  const { selectTarget } = useGame();
 
-    const spawnTarget = () => {
-      const newTarget = {
+  const [target, setTarget] = useState<TargetType[]>(() => {
+    const targetData = TARGETS.find((t) => t.id === selectTarget);
+    return [
+      {
         id: Date.now() + Math.random(),
         x: Math.random() * 600,
         y: Math.random() * 1000,
-        src: ""
-      }
+        src: targetData?.src ?? "",
+      },
+      {
+        id: Date.now() + Math.random(),
+        x: Math.random() * 600,
+        y: Math.random() * 1000,
+        src: targetData?.src ?? "",
+      },
+      {
+        id: Date.now() + Math.random(),
+        x: Math.random() * 600,
+        y: Math.random() * 1000,
+        src: targetData?.src ?? "",
+      },
+    ];
+  });
 
-      setTarget(prev => [...prev, newTarget])
-      
-    }
+  const spawnTarget = () => {
+    const currentTargetData = TARGETS.find((t) => t.id === selectTarget);
+    const newTarget = {
+      id: Date.now() + Math.random(),
+      x: Math.random() * 600,
+      y: Math.random() * 1000,
+      src: currentTargetData?.src ?? "",
+    };
 
-    useEffect(() => {
-      spawnTarget()
-      spawnTarget()
-      spawnTarget()
-    }, [])
+    setTarget((prev) => [...prev, newTarget]);
+  };
 
-    useEffect(() => {
-      const interval = setInterval(() => {
-        spawnTarget()
-      }, 3000)
+  useEffect(() => {
+    if (isGameOver) return
 
-      return () => clearInterval(interval)
-    }, [])
+    const interval = setInterval(() => {
+      spawnTarget();
+    }, 3000);
 
-    const removeTarget = (id: number) => {
-        setTarget(prev => prev.filter(t => t.id !== id))
+    return () => clearInterval(interval);
+  }, [isGameOver]);
 
-    }
+  const removeTarget = (id: number) => {
+    setTarget((prev) => prev.filter((t) => t.id !== id));
+  };
 
-    return {target, spawnTarget, removeTarget}
-    
-}
+  return { target, spawnTarget, removeTarget };
+};
 
-export default useSpawner
+export default useSpawner;
