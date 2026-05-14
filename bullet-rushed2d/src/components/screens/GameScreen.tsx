@@ -16,8 +16,9 @@ type MatchHistory = {
 const GameScreen = () => {
   const [score, setScore] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const { timeLeft } = useTimer(isPaused);
   const { setCurrentScreen, username } = useGame();
+  const [countdown, setCountdown] = useState(3);
+  const { timeLeft } = useTimer(isPaused || countdown > 0);
 
   const handleSave = () => {
     const history = JSON.parse(
@@ -44,13 +45,30 @@ const GameScreen = () => {
     return () => window.removeEventListener("keydown", handleKeydown);
   }, []);
 
+  useEffect(() => {
+    if (countdown === 0) return;
+
+    const interval = setInterval(() => {
+      setCountdown((prev: number) => prev - 1);
+    }, 1000);
+
+    console.log(countdown);
+
+    return () => clearInterval(interval);
+  }, [countdown]);
+
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <GameBoard onScore={setScore} />
+    <div className="min-h-screen flex items-center justify-center relative">
+      {countdown > 0 && (
+        <div className="absolute z-50 inset-0 flex items-center justify-center bg-black/50">
+          <span className="text-white text-9xl font-bold">{countdown}</span>
+        </div>
+      )}
+      <GameBoard onScore={setScore} isGameOver={timeLeft === 0} />
       <ScorePanel score={score} timeLeft={timeLeft} />
       <Modal isOpen={timeLeft === 0} onClose={() => {}}>
         <p>Game Over</p>
-        <p>Skor: {score}</p>
+        <p>Score: {score}</p>
         <Button onClick={handleSave}>Save</Button>
       </Modal>
       <Modal isOpen={isPaused} onClose={() => setIsPaused(false)}>
