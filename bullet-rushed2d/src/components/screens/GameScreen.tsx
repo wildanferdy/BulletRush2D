@@ -16,7 +16,7 @@ type MatchHistory = {
 const GameScreen = () => {
   const [score, setScore] = useState(0);
   const { timeLeft } = useTimer();
-  const { username } = useGame();
+  const { setCurrentScreen, username } = useGame();
 
   const handleSave = () => {
     const history = JSON.parse(
@@ -32,6 +32,7 @@ const GameScreen = () => {
       "shooter_history",
       JSON.stringify([...history, newMatch]),
     );
+    setCurrentScreen("history")
   };
 
   return (
