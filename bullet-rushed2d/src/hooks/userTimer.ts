@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useGame } from "../store/gameStore"
 import { LEVELS } from "../utils/gameConfig"
 
-const useTimer = () => {
+const useTimer = (isPaused: boolean) => {
     const {selectLevel} = useGame()
 
     const duration = selectLevel ? LEVELS[selectLevel as keyof typeof LEVELS].duration : 30
@@ -14,14 +14,14 @@ const useTimer = () => {
     const reduceFive = () => setTimeLeft(prev => prev - 5)
 
     useEffect(() => {
-        if(!isRunning || timeLeft === 0) return
+        if(!isRunning || timeLeft === 0 || isPaused) return
 
         const interval = setInterval(() => {
             setTimeLeft((prev: number) => prev - 1)
         }, 1000)
 
         return () => clearInterval(interval)
-    }, [isRunning, timeLeft])
+    }, [isRunning, timeLeft, isPaused])
 
     return {isRunning, timeLeft, pause, resume, reduceFive}
 

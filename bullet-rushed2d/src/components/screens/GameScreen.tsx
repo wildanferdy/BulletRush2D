@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GameBoard from "../game/GameBoard/GameBoard";
 import ScorePanel from "../game/ScorePanel";
 import useTimer from "../../hooks/userTimer";
@@ -15,7 +15,8 @@ type MatchHistory = {
 
 const GameScreen = () => {
   const [score, setScore] = useState(0);
-  const { timeLeft } = useTimer();
+  const [isPaused, setIsPaused] = useState(false);
+  const { timeLeft } = useTimer(isPaused);
   const { setCurrentScreen, username } = useGame();
 
   const handleSave = () => {
@@ -32,8 +33,16 @@ const GameScreen = () => {
       "shooter_history",
       JSON.stringify([...history, newMatch]),
     );
-    setCurrentScreen("history")
+    setCurrentScreen("history");
   };
+
+  useEffect(() => {
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsPaused((prev) => !prev);
+    };
+    window.addEventListener("keydown", handleKeydown);
+    return () => window.removeEventListener("keydown", handleKeydown);
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -43,6 +52,10 @@ const GameScreen = () => {
         <p>Game Over</p>
         <p>Skor: {score}</p>
         <Button onClick={handleSave}>Save</Button>
+      </Modal>
+      <Modal isOpen={isPaused} onClose={() => setIsPaused(false)}>
+        <p>Paused</p>
+        <Button onClick={() => setIsPaused(false)}>Continue</Button>
       </Modal>
     </div>
   );
