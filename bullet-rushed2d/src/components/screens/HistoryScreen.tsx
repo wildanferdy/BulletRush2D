@@ -16,15 +16,28 @@ const HistoryScreen = () => {
   });
 
   return (
-    <div>
-      {history.map((match) => (
-        <div key={match.id}>
-          <p>{match.playerName}</p>
-          <p>{match.score}</p>
-          <p>{match.playedAt}</p>
-        </div>
-      ))}
-      <Button onClick={() => setCurrentScreen(null)}>Back</Button>
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-8">
+      <div className="bg-zinc-900 w-80 rounded-lg p-4">
+        <h2 className="text-white font-bold text-center text-lg mb-4">
+          LEADERBOARD
+        </h2>
+        {history
+          .sort((a, b) => b.score - a.score)
+          .map((match) => (
+            <div
+              key={match.id}
+              className="flex justify-between items-center mb-3"
+            >
+              <div>
+                <p className="text-white font-medium">{match.playerName}</p>
+                <p className="text-zinc-400 text-sm">Score : {match.score}</p>
+              </div>
+            </div>
+          ))}
+        <Button onClick={() => setCurrentScreen(null)} className="w-full mt-4">
+          Back
+        </Button>
+      </div>
     </div>
   );
 };

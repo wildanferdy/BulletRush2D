@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import GameBoard from "../game/GameBoard/GameBoard";
-import ScorePanel from "../game/ScorePanel";
 import useTimer from "../../hooks/userTimer";
 import Modal from "../ui/Modal";
 import Button from "../ui/Button";
@@ -58,14 +57,13 @@ const GameScreen = () => {
   }, [countdown]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative">
+    <div className="w-screen h-screen relative overflow-hidden">
       {countdown > 0 && (
         <div className="absolute z-50 inset-0 flex items-center justify-center bg-black/50">
           <span className="text-white text-9xl font-bold">{countdown}</span>
         </div>
       )}
-      <GameBoard onScore={setScore} isGameOver={timeLeft === 0} />
-      <ScorePanel score={score} timeLeft={timeLeft} />
+      <GameBoard onScore={setScore} isGameOver={timeLeft === 0} score={score} timeLeft={timeLeft} countdown={countdown} />
       <Modal isOpen={timeLeft === 0} onClose={() => {}}>
         <p>Game Over</p>
         <p>Score: {score}</p>

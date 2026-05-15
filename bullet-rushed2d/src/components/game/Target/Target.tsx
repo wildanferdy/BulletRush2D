@@ -8,8 +8,8 @@ type Target = {
 const Target = ({ x, y, src, onHit }: Target) => {
 
     return (
-        <div className="absolute" style={{ left: x, top: y, }} onClick={onHit}>
-            <img src={src} alt="" className="w-12 h-12" />
+        <div className="absolute pointer-events-auto" style={{ left: x, top: y, }} onClick={onHit}>
+            <img src={src} alt="" className="w-24 h-24" />
         </div>
     )
 }
